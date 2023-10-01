@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "WorkflowService";
+
+package users;
+
+// The user service definition.
+service Users {
+	// Insert new user
+	rpc InsertUser (InsertUserRequest) returns (InsertUserReply);
+	// Update an existing user
+	rpc UpdateUser (UpdateUserRequest) returns (UpdateUserReply);
+	// Delete a single user
+	rpc DeleteUser (DeleteUserRequest) returns (DeleteUserReply);
+	// Get a single user
+	rpc GetUser (UserRequest) returns (UserReply);
+	// Get all users
+	rpc GetUsers (google.protobuf.Empty) returns (AllUsersReply);
+}
+
+message InsertUserRequest {
+	User user = 1;
+}
+
+message InsertUserReply {
+	string result = 1;
+}
+
+message UpdateUserRequest {
+	User user = 1;
+}
+
+message UpdateUserReply {
+	string result = 1;
+}
+
+message DeleteUserRequest {
+	int64 id = 1;
+}
+
+message DeleteUserReply {
+	string result = 1;
+}
+
+message UserRequest {
+	int64 id = 1;
+}
+
+message UserReply {
+	User user = 1;
+}
+
+message AllUsersReply {
+	repeated User users = 1;
+}
+
+message User {
+	int64 id = 1;
+	string email = 2;
+	google.protobuf.Timestamp creationdate = 3;
+	string firstname = 4;
+	string lastname = 5;
+	repeated Permission permissions = 6;
+}
+
+message Permission {
+	int64 id = 1;
+	string name = 2;
+}

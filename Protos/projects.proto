@@ -1,0 +1,95 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "WorkflowService";
+
+package projects;
+
+// The project service definition.
+service Projects {
+	// Insert new project
+	rpc InsertProject (InsertProjectRequest) returns (InsertProjectReply);
+	// Update an existing project
+	rpc UpdateProject (UpdateProjectRequest) returns (UpdateProjectReply);
+	// Delete a single project
+	rpc DeleteProject (DeleteProjectRequest) returns (DeleteProjectReply);
+	// Get a single project
+	rpc GetProject (ProjectRequest) returns (ProjectReply);
+	// Get all projects
+	rpc GetProjects (AllProjectsRequest) returns (AllProjectsReply);
+}
+
+message InsertProjectRequest {
+	Project project = 1;
+}
+
+message InsertProjectReply {
+	string result = 1;
+}
+
+message UpdateProjectRequest {
+	Project project = 1;
+}
+
+message UpdateProjectReply {
+	string result = 1;
+}
+
+message DeleteProjectRequest {
+	int64 id = 1;
+}
+
+message DeleteProjectReply {
+	string result = 1;
+}
+
+message ProjectRequest {
+	int64 id = 1;
+}
+
+message ProjectReply {
+	Project project = 1;
+}
+
+message AllProjectsRequest {
+	string user = 1;
+}
+
+message AllProjectsReply {
+	repeated Project projects = 1;
+}
+
+message Project {
+	int64 id = 1;
+	google.protobuf.Timestamp creationdate = 2;
+	string name = 3;
+	google.protobuf.Timestamp publicationdate = 4;
+	ReportType reporttype = 5;
+	repeated OutputChannel outputchannels = 6;
+	repeated ReportingRequirement reportingrequirements = 7;
+	string version = 8;
+	string reportingperiod = 9;
+	Status status = 10;
+}
+
+message OutputChannel {
+	int64 id = 1;
+	string name = 2;
+}
+
+message ReportingRequirement {
+	int64 id = 1;
+	string name = 2;
+}
+
+message ReportType {
+	int64 id = 1;
+	string name = 2;
+}
+
+message Status {
+	int64 id = 1;
+	string name = 2;
+}

@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "WorkflowService";
+
+package sections;
+
+// The section service definition.
+service Sections {
+	// Insert new section
+	rpc InsertSection (InsertSectionRequest) returns (InsertSectionReply);
+	// Update an existing section
+	rpc UpdateSection (UpdateSectionRequest) returns (UpdateSectionReply);
+	// Delete a single section
+	rpc DeleteSection (DeleteSectionRequest) returns (DeleteSectionReply);
+	// Get a single section
+	rpc GetSection (SectionRequest) returns (SectionReply);
+	// Get all sections
+	rpc GetSections (google.protobuf.Empty) returns (AllSectionsReply);
+}
+
+message InsertSectionRequest {
+	Section section = 1;
+}
+
+message InsertSectionReply {
+	string result = 1;
+}
+
+message UpdateSectionRequest {
+	Section section = 1;
+}
+
+message UpdateSectionReply {
+	string result = 1;
+}
+
+message DeleteSectionRequest {
+	int64 id = 1;
+}
+
+message DeleteSectionReply {
+	string result = 1;
+}
+
+message SectionRequest {
+	int64 id = 1;
+}
+
+message SectionReply {
+	Section section = 1;
+}
+
+message AllSectionsRequest {
+	repeated int64 sectionids = 1;
+}
+
+message AllSectionsReply {
+	repeated Section sections = 1;
+}
+
+message Section {
+	int64 id = 1;
+	google.protobuf.Timestamp creationdate = 2;
+	google.protobuf.Timestamp lastmodified = 3;
+	string lastmodifiedby = 4;
+	string title = 5;
+	string html = 6;
+}

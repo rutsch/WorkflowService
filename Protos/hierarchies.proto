@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "WorkflowService";
+
+package hierarchies;
+
+// The hierarchy service definition.
+service Hierarchies {
+	// Insert new hierarchy
+	rpc InsertHierarchy (InsertHierarchyRequest) returns (InsertHierarchyReply);
+	// Update an existing hierarchy
+	rpc UpdateHierarchy (UpdateHierarchyRequest) returns (UpdateHierarchyReply);
+	// Delete a single hierarchy
+	rpc DeleteHierarchy (DeleteHierarchyRequest) returns (DeleteHierarchyReply);
+	// Get a single hierarchy
+	rpc GetHierarchy (HierarchyRequest) returns (HierarchyReply);
+	// Get all hierarchies
+	rpc GetHierarchies (google.protobuf.Empty) returns (AllHierarchiesReply);
+}
+
+message InsertHierarchyRequest {
+	Hierarchy hierarchy = 1;
+}
+
+message InsertHierarchyReply {
+	string result = 1;
+}
+
+message UpdateHierarchyRequest {
+	Hierarchy hierarchy = 1;
+}
+
+message UpdateHierarchyReply {
+	string result = 1;
+}
+
+message DeleteHierarchyRequest {
+	int64 id = 1;
+}
+
+message DeleteHierarchyReply {
+	string result = 1;
+}
+
+message HierarchyRequest {
+	int64 id = 1;
+}
+
+message HierarchyReply {
+	Hierarchy hierarchy = 1;
+}
+
+message AllHierarchiesReply {
+	repeated Hierarchy hierarchies = 1;
+}
+
+message Hierarchy {
+	int64 id = 1;
+	google.protobuf.Timestamp creationdate = 2;
+	google.protobuf.Timestamp lastmodified = 3;
+	string lastmodifiedby = 4;
+	string title = 5;
+	repeated HierarchyItem children = 6;
+}
+
+message HierarchyItem {
+	int64 id = 1;
+	string title = 2;
+	repeated HierarchyItem children = 3;
+}

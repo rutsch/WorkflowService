@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "WorkflowService";
+
+package notifications;
+
+// The notifications service definition.
+service Notifications {
+	// Saves a notification
+	rpc SaveNotification (SaveNotificationRequest) returns (SaveNotificationReply);
+	// Updates a notification
+	rpc UpdateNotification (UpdateNotificationRequest) returns (UpdateNotificationReply);
+	// Deletes a notification
+	rpc DeleteNotification (DeleteNotificationRequest) returns (DeleteNotificationReply);
+	// Gets all notifications for a user
+	rpc GetAllNotifications (google.protobuf.Empty) returns (AllNotificationsReply);
+	// Streams notifications for a user
+	rpc NotificationsStream (NotificationsStreamRequest) returns (stream NotificationsStreamReply);
+}
+
+message AllNotificationsReply {
+	repeated Notification notifications = 1;
+}
+
+message NotificationsStreamRequest {
+	string user = 1;
+}
+
+message NotificationsStreamReply {
+	Notification notification = 1;
+}
+
+message SaveNotificationRequest {
+	Notification notification = 1;
+}
+
+message SaveNotificationReply {
+	string result = 1;
+}
+
+message UpdateNotificationRequest {
+	Notification notification = 1;
+}
+
+message UpdateNotificationReply {
+	string result = 1;
+}
+
+message DeleteNotificationRequest {
+	int64 id = 1;
+}
+
+message DeleteNotificationReply {
+	string result = 1;
+}
+
+message Notification {
+	int64 id = 1;
+	google.protobuf.Timestamp timestamp = 2;
+    google.protobuf.Timestamp showuntil = 3;
+	string author = 4;
+	string text = 5;
+	string projectid = 6;
+	NotificationType type = 7;
+
+    enum NotificationType {
+        INFO = 0;
+        WARN = 1;
+		ERROR = 2;
+    }
+}

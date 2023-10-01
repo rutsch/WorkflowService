@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "WorkflowService";
+
+package activities;
+
+// The activities service definition.
+service Activities {
+	// Saves a activity
+	rpc SaveActivity (SaveActivityRequest) returns (SaveActivityReply);
+	// Gets all activities for a user
+	rpc GetAllActivities (google.protobuf.Empty) returns (AllActivitiesReply);
+	// Streams activities for a user
+	rpc ActivitiesStream (ActivitiesStreamRequest) returns (stream ActivitiesStreamReply);
+}
+
+message AllActivitiesReply {
+	repeated Activity activities = 1;
+}
+
+message ActivitiesStreamRequest {
+	string user = 1;
+}
+
+message ActivitiesStreamReply {
+	Activity activity = 1;
+}
+
+message SaveActivityRequest {
+	Activity activity = 1;
+}
+
+message SaveActivityReply {
+	string result = 1;
+}
+
+message Activity {
+	int64 id = 1;
+	google.protobuf.Timestamp timestamp = 2;
+	string user = 3;
+	string details = 5;
+	string projectid = 6;
+	ActivityType type = 7;
+
+    enum ActivityType {
+        SECTIONOPENED = 0;
+        SECTIONSAVED = 1;
+        SECTIONCLOSED = 2;
+        IMAGEUPLOADED = 3;
+        IMAGECHANGED = 4;
+        IMAGEDELETED = 5;
+        LOGGEDIN = 6;
+        PROJECTCREATED = 7;
+        PROJECTCLONED = 8;
+        PROJECTDELETED = 9;
+        HIERARCHYCHANGED = 10;
+        VERSIONCREATED = 11;
+        VERSIONRESTORED = 12;
+        XBRLGENERATED = 13;
+    }
+}

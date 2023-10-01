@@ -1,0 +1,176 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "WorkflowService";
+
+package comments;
+
+// The comment service definition.
+service Comments {
+	// Sends a comment
+	rpc GetComment (CommentRequest) returns (CommentReply);
+	// Saves a comment
+	rpc SaveComment (SaveCommentRequest) returns (SaveCommentReply);
+	// Updates a comment
+	rpc UpdateComment (UpdateCommentRequest) returns (UpdateCommentReply);
+	// Deletes a comment
+	rpc DeleteComment (DeleteCommentRequest) returns (DeleteCommentReply);
+	// Resolves comments for a thread_id
+	rpc ResolveComments (ResolveCommentsRequest) returns (ResolveCommentsReply);
+	// Sends a commentthread
+	rpc GetCommentThread (CommentThreadRequest) returns (CommentThreadReply);
+	// Deletes a comment thread
+	rpc DeleteCommentThread (DeleteCommentThreadRequest) returns (DeleteCommentThreadReply);
+	// Gets all comments for a user
+	rpc GetAllComments (AllCommentsRequest) returns (AllCommentsReply);
+	// Gets all comments for a section
+	rpc GetAllCommentsForSection (AllSectionCommentsRequest) returns (AllSectionCommentsReply);
+	// Gets all comments for a user (all comments in accessible sections)
+	rpc GetAllCommentsForUser (AllUserCommentsRequest) returns (AllUserCommentsReply);
+	// Gets comments count for a user (all comments in accessible sections)
+	rpc GetCommentsCountForUser (UserCommentsCountRequest) returns (UserCommentsCountReply);
+	// Gets comments count for a user (all comments in accessible sections)
+	rpc GetUniqueCommentProjects (UniqueCommentProjectsRequest) returns (UniqueCommentProjectsReply);	
+	// Streams comments for a user
+	rpc CommentsStream (CommentsStreamRequest) returns (stream CommentsStreamReply);
+}
+
+// The request message containing the comment id.
+message CommentRequest {
+	int64 id = 1;
+}
+
+// The response message containing the comment.
+message CommentReply {
+	Comment comment = 1;
+}
+
+message AllCommentsRequest {
+	string user = 1;
+}
+
+message AllCommentsReply {
+	repeated CommentThread commentthreads = 1;
+}
+
+message AllSectionCommentsRequest {
+	repeated string ids = 1;
+}
+
+message AllSectionCommentsReply {
+	repeated CommentThread commentthreads = 1;
+}
+
+message AllUserCommentsRequest {
+	repeated string sectionids = 1;
+	repeated string seenids = 2;
+	string useremail = 3;
+}
+
+message AllUserCommentsReply {
+	repeated CommentThread commentthreads = 1;
+}
+
+message UserCommentsCountRequest {
+	repeated string sectionids = 1;
+	repeated string seenids = 2;
+	string useremail = 3;
+}
+
+message UserCommentsCountReply {
+	int64 commentcount = 1;
+}
+
+message UniqueCommentProjectsRequest {
+
+}
+
+message UniqueCommentProjectsReply {
+	repeated string sectionids = 1;
+}
+
+message CommentsStreamRequest {
+	string user = 1;
+}
+
+message CommentsStreamReply {
+	Comment comment = 1;
+}
+
+// The request message containing the thread id.
+message CommentThreadRequest {
+  	string thread_id = 1;
+}
+
+// The response message containing the comments for a thread id.
+message CommentThreadReply {
+  	repeated Comment comments = 1;
+}
+
+message SaveCommentRequest {
+	Comment comment = 1;
+}
+
+message SaveCommentReply {
+	string result = 1;
+}
+
+message UpdateCommentRequest {
+	Comment comment = 1;
+}
+
+message UpdateCommentReply {
+	string result = 1;
+}
+
+message ResolveCommentsRequest {
+	string thread_id = 1;
+}
+
+message ResolveCommentsReply {
+	string result = 1;
+}
+
+message DeleteCommentRequest {
+	int64 id = 1;
+}
+
+message DeleteCommentReply {
+	string result = 1;
+}
+
+message DeleteCommentThreadRequest {
+	string thread_id = 1;
+}
+
+message DeleteCommentThreadReply {
+	string result = 1;
+}
+
+message Comment {
+	int64 id = 1;
+	string thread_id = 2;
+	google.protobuf.Timestamp timestamp = 3;
+	string author = 4;
+	string text = 5;
+	string projectid = 6;
+	string sectionid = 7;
+	string section = 8;
+	string outputchannelid = 9;
+	string language = 11;
+	string entitygroupid = 12;
+	string legalentityid = 13;
+	string selectedtext = 14;
+	bool resolved = 15;
+	string contentversion = 16;
+}
+
+message CommentThread {
+	string thread_id = 1;
+	repeated Comment comments = 2;
+}
+
+message SeenUser {
+	string email = 1;
+}
